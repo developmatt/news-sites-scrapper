@@ -2,6 +2,7 @@ import fs from "fs";
 import { CreateRawNewsDto } from "../../repositories/raw-news-repository/dto/create-raw-news.dto";
 import { DatabaseInterface } from "../../infra/database/database.interface";
 import { RawNewsEntity } from "../../repositories/raw-news-repository/entities/raw-news.entity";
+import { compactText } from "../../utils/compactText";
 
 const BASE_DIR = "storage/g1/raw";
 
@@ -26,7 +27,7 @@ export class RawNewsRepository implements DatabaseInterface {
         "_"
       )}.txt`;
 
-      await this.database.create(fileName, createRawNewsDto.content);
+      await this.database.create(fileName, compactText(createRawNewsDto.content));
     } catch (erro) {
       if ((retry ?? 1) < 3)
         return this.create(createRawNewsDto, { retry: retry + 1 });
