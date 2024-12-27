@@ -1,8 +1,8 @@
 import axios from "axios";
-import { RawNewsEntity } from "../repositories/raw-news-repository/entities/raw-news.entity";
+import { RawNewsEntity } from "../../repositories/raw-news-repository/entities/raw-news.entity";
 import { NewsPageContentExtractorInterface } from "./news-page-content-extractor.interface";
-import { HtmlManipulator } from "../lib/html-manipulator.class";
-import { SourcesEnum } from "../enums/sources.enum";
+import { HtmlManipulator } from "../../lib/html-manipulator.class";
+import { SourcesEnum } from "../../enums/sources.enum";
 
 export class NewsPageContentExtractor implements NewsPageContentExtractorInterface {
   private htmlManipulator: HtmlManipulator;
