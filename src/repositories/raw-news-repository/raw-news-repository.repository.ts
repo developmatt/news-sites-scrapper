@@ -18,7 +18,7 @@ export class RawNewsRepository implements DatabaseInterface {
 
   async create(
     createRawNewsDto: CreateRawNewsDto,
-    options: CreateOptions
+    options?: CreateOptions
   ): Promise<RawNewsEntity | undefined> {
     const retry = options?.retry ?? 0;
     try {
