@@ -3,6 +3,7 @@ import { HtmlManipulator } from "../../lib/html-manipulator.class";
 import axios from "axios";
 import { DatabaseInterface } from "../../infra/database/database.interface";
 import { CreateRawNewsDto } from "../../repositories/raw-news-repository/dto/create-raw-news.dto";
+import { CONFIG } from "../../config/config";
 
 export class CnnNews implements ExtractorInterface {
   private htmlManipulator: HtmlManipulator;
@@ -23,10 +24,10 @@ export class CnnNews implements ExtractorInterface {
         return this.htmlManipulator.getAttribute(item, "href");
       });
 
-
-    const headlinesLinks: string[] = Array.from(new Set(feedPosts));
-      console.log(headlinesLinks);
-
+    const headlinesLinks: string[] = Array.from(new Set(feedPosts)).slice(
+      0,
+      CONFIG.newsLimitPerSite ?? 3
+    ) as string[];
 
     for await (const link of headlinesLinks) {
       const pageContent = await axios.get(link).then((res) => res.data);
@@ -41,8 +42,8 @@ export class CnnNews implements ExtractorInterface {
 
       const createRawNewsDto: CreateRawNewsDto = {
         title,
-        content
-      }
+        content,
+      };
 
       await this.rawNewsDatabase.create(createRawNewsDto);
     }
