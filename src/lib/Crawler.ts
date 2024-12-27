@@ -1,4 +1,5 @@
 import puppeteer, { Browser, Page } from 'puppeteer';
+import * as cheerio from 'cheerio';
 
 export class Crawler {
   public crawler!: Browser
@@ -19,12 +20,6 @@ export class Crawler {
 
   async extractContent() {
     return this.page.content();
-  }
-
-  async performQuerySelectorAllToPage(selector: string) {
-    return await this.page.evaluate((selector) => {
-      return document.querySelectorAll(selector);
-    }, selector)
   }
 
   async closeConnection() {
