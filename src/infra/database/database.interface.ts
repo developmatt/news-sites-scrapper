@@ -1,3 +1,3 @@
 export interface DatabaseInterface {
-  create(entity: any): Promise<any | undefined>;
+  create(entity: any, options?: any): Promise<any | undefined>;
 }

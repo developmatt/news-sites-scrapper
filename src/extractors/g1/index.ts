@@ -1,14 +1,13 @@
 import { ExtractorInterface } from "../extractor.interface";
 import { HtmlManipulator } from "../../lib/html-manipulator.class";
 import axios from "axios";
-import { StorerInterface } from "../../lib/storer/interfaces/storer.interface";
 import { DatabaseInterface } from "../../infra/database/database.interface";
 import { CreateRawNewsDto } from "../../repositories/raw-news-repository/dto/create-raw-news.dto";
 
 export class G1 implements ExtractorInterface {
   private htmlManipulator: HtmlManipulator;
 
-  constructor(private readonly database: DatabaseInterface) {
+  constructor(private readonly rawNewsDatabase: DatabaseInterface) {
     this.htmlManipulator = new HtmlManipulator();
   }
 
@@ -41,7 +40,7 @@ export class G1 implements ExtractorInterface {
         content
       }
 
-      await this.database.create(createRawNewsDto);
+      await this.rawNewsDatabase.create(createRawNewsDto);
     }
   }
 }

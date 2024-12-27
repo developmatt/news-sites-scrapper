@@ -1,11 +1,35 @@
-import { CreateRawNewsDto } from "./dto/create-raw-news.dto";
+import fs from "fs";
+import { CreateRawNewsDto } from "../../repositories/raw-news-repository/dto/create-raw-news.dto";
+import { DatabaseInterface } from "../../infra/database/database.interface";
+import { RawNewsEntity } from "../../repositories/raw-news-repository/entities/raw-news.entity";
 
-export class RawNewsRepository {
-  constructor(
-    private readonly database: any
-  ) {}
+const BASE_DIR = "storage/g1/raw";
 
-  async create(rawNews: CreateRawNewsDto) {
-    this.database.create(rawNews);
+type CreateOptions = {
+  retry?: number;
+};
+
+export class RawNewsRepository implements DatabaseInterface {
+  async create(
+    createRawNewsDto: CreateRawNewsDto,
+    options: CreateOptions
+  ): Promise<RawNewsEntity | undefined> {
+    const retry = options?.retry ?? 0;
+    try {
+      const fileName = `${BASE_DIR}/${createRawNewsDto.title.replace(
+        / /g,
+        "_"
+      )}.txt`;
+
+      fs.mkdirSync(BASE_DIR, { recursive: true });
+      fs.writeFileSync(fileName, createRawNewsDto.content, "utf-8");
+
+      return createRawNewsDto;
+    } catch (erro) {
+      if ((retry ?? 1) < 3)
+        return this.create(createRawNewsDto, { retry: retry + 1 });
+      console.error("Erro ao escrever no arquivo:", erro);
+      return;
+    }
   }
 }

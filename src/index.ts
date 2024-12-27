@@ -1,5 +1,5 @@
 import { G1 } from "./extractors/g1"
-import { LocalStorer } from "./lib/storer/local-storer.class"
+import { RawNewsRepository } from "./repositories/raw-news-repository/raw-news-repository.repository"
 
 async function start() {
   //TODO: Go to home page
@@ -12,12 +12,9 @@ async function start() {
   //TODO: Call the endpoint to update the news
 
 
-  const localStorer = new LocalStorer()
-  const g1 = new G1(localStorer)
+  const rawNewsDatabase = new RawNewsRepository()
+  const g1 = new G1(rawNewsDatabase)
   await g1.extract()
-
-  console.log('Hello World')
-  console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
 }
 
 start()
