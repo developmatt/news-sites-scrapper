@@ -5,7 +5,7 @@ import { DatabaseInterface } from "../../infra/database/database.interface";
 import { CreateRawNewsDto } from "../../repositories/raw-news-repository/dto/create-raw-news.dto";
 import { CONFIG } from "../../config/config";
 
-export class G1 implements ExtractorInterface {
+export class R7News implements ExtractorInterface {
   private htmlManipulator: HtmlManipulator;
 
   constructor(private readonly rawNewsDatabase: DatabaseInterface) {
@@ -14,12 +14,12 @@ export class G1 implements ExtractorInterface {
 
   async extract() {
     const homeContent = await axios
-      .get("https://g1.globo.com/")
+      .get("https://noticias.r7.com/")
       .then((res) => res.data);
 
     this.htmlManipulator.load(homeContent.toString());
     const feedPosts = this.htmlManipulator
-      .querySelectorAll(".feed-post a")
+      .querySelectorAll("article a")
       .map((_: number, item: any) => {
         return this.htmlManipulator.getAttribute(item, "href");
       });
@@ -33,7 +33,7 @@ export class G1 implements ExtractorInterface {
       this.htmlManipulator.load(pageContent.toString());
 
       const title = this.htmlManipulator.getText(
-        this.htmlManipulator.querySelectorAll(".content-head__title")[0]
+        this.htmlManipulator.querySelectorAll("h1")[0]
       );
       const content = this.htmlManipulator.getText(
         this.htmlManipulator.querySelectorAll("article")[0]

@@ -1,5 +1,6 @@
 import { CnnNews } from "./extractors/cnn-news"
 import { G1 } from "./extractors/g1"
+import { R7News } from "./extractors/r7-news"
 import { RawNewsRepository } from "./repositories/raw-news-repository/raw-news-repository.repository"
 
 async function start() {
@@ -15,13 +16,17 @@ async function start() {
 
   const g1RawNewsDatabase = new RawNewsRepository('storage/g1/raw')
   const cnnNewsRawRawNewsDatabase = new RawNewsRepository('storage/cnnnews/raw')
+  const r7NewsRawNewsDatabase = new RawNewsRepository('storage/r7/raw')
   const g1 = new G1(g1RawNewsDatabase)
   const cnnNews = new CnnNews(cnnNewsRawRawNewsDatabase)
+  const r7News = new R7News(r7NewsRawNewsDatabase)
 
   await Promise.all([
     g1.extract(),
-    cnnNews.extract()
+    cnnNews.extract(),
+    r7News.extract()
   ])
+
 }
 
 start()
