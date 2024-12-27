@@ -10,15 +10,14 @@ type CreateOptions = {
 };
 
 export class RawNewsRepository implements DatabaseInterface {
-  private baseDir: string;
-
-  constructor(baseDir?: string) {
-    this.baseDir = baseDir ?? BASE_DIR;
-  }
+  constructor(
+    private readonly database: DatabaseInterface,
+    private readonly baseDir: string
+  ) {}
 
   async create(
     createRawNewsDto: CreateRawNewsDto,
-    options: CreateOptions
+    options?: CreateOptions
   ): Promise<RawNewsEntity | undefined> {
     const retry = options?.retry ?? 0;
     try {
@@ -27,10 +26,7 @@ export class RawNewsRepository implements DatabaseInterface {
         "_"
       )}.txt`;
 
-      fs.mkdirSync(this.baseDir, { recursive: true });
-      fs.writeFileSync(fileName, createRawNewsDto.content, "utf-8");
-
-      return createRawNewsDto;
+      await this.database.create(fileName, createRawNewsDto.content);
     } catch (erro) {
       if ((retry ?? 1) < 3)
         return this.create(createRawNewsDto, { retry: retry + 1 });
