@@ -10,18 +10,24 @@ type CreateOptions = {
 };
 
 export class RawNewsRepository implements DatabaseInterface {
+  private baseDir: string;
+
+  constructor(baseDir?: string) {
+    this.baseDir = baseDir ?? BASE_DIR;
+  }
+
   async create(
     createRawNewsDto: CreateRawNewsDto,
     options: CreateOptions
   ): Promise<RawNewsEntity | undefined> {
     const retry = options?.retry ?? 0;
     try {
-      const fileName = `${BASE_DIR}/${createRawNewsDto.title.replace(
+      const fileName = `${this.baseDir}/${createRawNewsDto.title.replace(
         / /g,
         "_"
       )}.txt`;
 
-      fs.mkdirSync(BASE_DIR, { recursive: true });
+      fs.mkdirSync(this.baseDir, { recursive: true });
       fs.writeFileSync(fileName, createRawNewsDto.content, "utf-8");
 
       return createRawNewsDto;
