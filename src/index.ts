@@ -1,5 +1,6 @@
 import { SourcesEnum } from "./enums/sources.enum";
 import { HomePageNewsLinksExtractor } from "./home-page-news-links-extractor/home-page-news-links-extractor.class";
+import { LocalStorer } from "./lib/storer/local-storer.class";
 import { NewsPageContentExtractor } from "./news-page-content-extractor/news-page-content-extractor.class";
 import { RawNewsRepository } from "./repositories/raw-news-repository/raw-news-repository.repository";
 
@@ -13,7 +14,9 @@ async function start() {
   //TODO: Save the response in database
   //TODO: Call the endpoint to update the news
 
-  const cnnRawRepository = new RawNewsRepository("storage/cnnnews/raw");
+  const localStorerDatabase = new LocalStorer();
+
+  const cnnRawRepository = new RawNewsRepository(localStorerDatabase, "storage/cnnnews/raw");
   const cnnHomeLinks = new HomePageNewsLinksExtractor(
     SourcesEnum.CNN_NEWS,
     ".home__list__item a"
@@ -34,7 +37,7 @@ async function start() {
     })
   );
 
-  const g1RawRepository = new RawNewsRepository("storage/g1/raw");
+  const g1RawRepository = new RawNewsRepository(localStorerDatabase, "storage/g1/raw");
   const g1HomeLinks = new HomePageNewsLinksExtractor(
     SourcesEnum.G1,
     ".feed-post a"
@@ -55,7 +58,7 @@ async function start() {
     })
   );
 
-  const r7RawRepository = new RawNewsRepository("storage/r7/raw");
+  const r7RawRepository = new RawNewsRepository(localStorerDatabase, "storage/r7/raw");
   const r7HomeLinks = new HomePageNewsLinksExtractor(
     SourcesEnum.R7_NEWS,
     "article a"
