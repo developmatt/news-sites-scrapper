@@ -1,8 +1,14 @@
+import { Ai } from "./core/ai/ai.class";
+import { HomePageNewsLinksExtractor } from "./core/home-page-news-links-extractor/home-page-news-links-extractor.class";
+import { NewsPageContentExtractor } from "./core/news-page-content-extractor/news-page-content-extractor.class";
 import { SourcesEnum } from "./enums/sources.enum";
-import { HomePageNewsLinksExtractor } from "./home-page-news-links-extractor/home-page-news-links-extractor.class";
+import { OpenAI } from "./lib/open-ai.class";
 import { LocalStorer } from "./lib/storer/local-storer.class";
-import { NewsPageContentExtractor } from "./news-page-content-extractor/news-page-content-extractor.class";
 import { RawNewsRepository } from "./repositories/raw-news-repository/raw-news-repository.repository";
+
+
+let news: string[] = []
+
 
 async function start() {
   //TODO: Go to home page
@@ -13,6 +19,7 @@ async function start() {
 
   //TODO: Save the response in database
   //TODO: Call the endpoint to update the news
+
 
   const localStorerDatabase = new LocalStorer();
 
@@ -33,6 +40,7 @@ async function start() {
         "article"
       );
       const rawNews = await cnnNewsRawContentExtractor.extract();
+      news.push(rawNews.content)
       await cnnRawRepository.create(rawNews);
     })
   );
@@ -54,6 +62,7 @@ async function start() {
         "article"
       );
       const rawNews = await g1NewsRawContentExtractor.extract();
+      news.push(rawNews.content)
       await g1RawRepository.create(rawNews);
     })
   );
@@ -75,9 +84,18 @@ async function start() {
         "article"
       );
       const rawNews = await r7NewsRawContentExtractor.extract();
+      news.push(rawNews.content)
       await r7RawRepository.create(rawNews);
     })
   );
 }
 
-start();
+async function ai(news: string[]) {
+  const aiClass = new Ai(new OpenAI())
+  const result = await aiClass.summarizeTexts(news)
+  console.log(JSON.parse(result))
+}
+
+
+start()
+  .then(() => ai(news))
