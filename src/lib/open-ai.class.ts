@@ -12,6 +12,15 @@ export class OpenAI implements AiInterface {
   }
 
   async createCompletions(contents: string[], instructions?: string) {
+    if (!CONFIG.isProd) return {
+      choices: [
+        {
+          message: {
+            content: "```json\n{\n  \"role\": \"developer\",\n  \"content\": [\n    {\n      \"type\": \"text\",\n      \"text\": \"Please provide a list of contents to be summarized\"\n    }\n  ]\n}\n```"
+          }
+        }
+      ]
+    }
     const messages: ChatCompletionMessageParam[] = [
       {
         "role": "developer",
