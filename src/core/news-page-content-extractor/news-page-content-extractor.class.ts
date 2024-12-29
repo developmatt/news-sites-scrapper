@@ -3,6 +3,8 @@ import { RawNewsEntity } from "../../repositories/raw-news-repository/entities/r
 import { NewsPageContentExtractorInterface } from "./news-page-content-extractor.interface";
 import { HtmlManipulator } from "../../lib/html-manipulator.class";
 import { SourcesEnum } from "../../enums/sources.enum";
+import { ExtractedRawNewsDto } from "../../repositories/raw-news-repository/dto/extracted-raw-news.dto";
+import { SourcesCategoriesEnum } from "../../config/sources-categories";
 
 export class NewsPageContentExtractor implements NewsPageContentExtractorInterface {
   private htmlManipulator: HtmlManipulator;
@@ -34,17 +36,18 @@ export class NewsPageContentExtractor implements NewsPageContentExtractorInterfa
     );
   }
   
-  async extract(): Promise<RawNewsEntity> {
+  async extract(): Promise<ExtractedRawNewsDto> {
     const pageContent = await this.getPageContent(this.url);
     this.htmlManipulator.load(pageContent.toString());
 
     const title = this.getNewsTitle(this.titleSelector);
     const content = this.getNewsContent(this.contentSelector);
 
-    const rawNewsEntity: RawNewsEntity = {
+    const rawNewsEntity: ExtractedRawNewsDto = {
       title,
       content,
       source: this.source,
+      category: SourcesCategoriesEnum[this.source]
     }
 
     return rawNewsEntity;
