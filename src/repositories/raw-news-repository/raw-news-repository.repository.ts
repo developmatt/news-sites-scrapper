@@ -3,31 +3,31 @@ import { CreateRawNewsDto } from "../../repositories/raw-news-repository/dto/cre
 import { DatabaseInterface } from "../../infra/database/database.interface";
 import { RawNewsEntity } from "../../repositories/raw-news-repository/entities/raw-news.entity";
 import { compactText } from "../../utils/compactText";
-
-const BASE_DIR = "storage/g1/raw";
+import { AppDataSource } from "../../infra/database/data-source";
+import { SourcesEnum } from "../../enums/sources.enum";
+import { RawNewsCategoryEnum } from "../../enums/raw-news-category.enum";
 
 type CreateOptions = {
   retry?: number;
 };
 
-export class RawNewsRepository implements DatabaseInterface {
-  constructor(
-    private readonly database: DatabaseInterface,
-    private readonly baseDir: string
-  ) {}
+const repository = AppDataSource.getRepository(RawNewsEntity);
 
+export class RawNewsRepository implements DatabaseInterface {
   async create(
     createRawNewsDto: CreateRawNewsDto,
     options?: CreateOptions
   ): Promise<RawNewsEntity | undefined> {
     const retry = options?.retry ?? 0;
     try {
-      const fileName = `${this.baseDir}/${createRawNewsDto.title.replace(
-        / /g,
-        "_"
-      )}.txt`;
 
-      await this.database.create(fileName, compactText(createRawNewsDto.content));
+      const rawNews = new RawNewsEntity();
+      rawNews.title = createRawNewsDto.title;
+      rawNews.content = createRawNewsDto.content;
+      rawNews.source = createRawNewsDto.source;
+      rawNews.rawCategory = createRawNewsDto.category;
+
+      await repository.save(rawNews);
     } catch (erro) {
       if ((retry ?? 1) < 3)
         return this.create(createRawNewsDto, { retry: retry + 1 });
