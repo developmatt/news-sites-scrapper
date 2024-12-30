@@ -5,11 +5,11 @@ import { CONFIG } from "../../config/config";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
-  host: CONFIG.dbHost,
-  port: CONFIG.dbPort,
-  username: CONFIG.dbUser,
-  password: CONFIG.dbPassword,
-  database: CONFIG.dbName,
+  host: CONFIG.dbHost ?? 'localhost',
+  port: CONFIG.dbPort ?? 5432,
+  username: CONFIG.dbUser ?? 'pg',
+  password: CONFIG.dbPassword ?? 'pg',
+  database: CONFIG.dbName ?? 'news_scrapper',
   synchronize: false,
   logging: !CONFIG.isProd,
   entities: [
