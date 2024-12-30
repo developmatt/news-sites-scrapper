@@ -16,14 +16,17 @@ export class SummarizedNewsEntity extends AbstractEntity {
     @Column({ type: 'text' })
     content: string;
 
-    @Column({ type: 'text', array: true })
-    tags: string[]
+    @Column({ type: 'text', array: true, nullable: true })
+    tags?: string[]
 
-    @Column({ type: 'enum', enum: RawNewsCategoryEnum, array: true })
-    categories: RawNewsCategoryEnum[]
+    @Column({ type: 'text', array: true, nullable: true })
+    categories?: string[]
 
-    @Column({ type: 'enum', enum: SummarizedNewMoodsEnum })
-    mood: SummarizedNewMoodsEnum
+    @Column({ type: 'enum', enum: SummarizedNewMoodsEnum , default: SummarizedNewMoodsEnum.NEUTRAL })
+    mood?: SummarizedNewMoodsEnum
+
+    @Column({ type: 'int', default: 0 })
+    score?: number
 
     @OneToOne(() => RawNewsEntity)
     @JoinColumn()
