@@ -6,29 +6,16 @@ import { SourcesEnum } from "../../enums/sources.enum";
 import { ExtractedRawNewsDto } from "../../repositories/raw-news-repository/dto/extracted-raw-news.dto";
 import { SourcesCategoriesEnum } from "../../config/sources-categories";
 import { compactText } from "../../utils/compactText";
+import { NewsPageContentExtractor } from "./news-page-content-extractor.class";
 
-export class NewsPageContentExtractor implements NewsPageContentExtractorInterface {
-  protected htmlManipulator: HtmlManipulator;
+export class GloboSportsNewsPageContentExtractor extends NewsPageContentExtractor {
   constructor(
-    protected readonly url: string,
-    protected readonly source: SourcesEnum,
-    protected readonly titleSelector: string,
-    protected readonly contentSelector: string | string[]
-  
+    url: string,
+    source: SourcesEnum,
+    titleSelector: string,
+    contentSelector: string | string[]
   ) {
-    this.htmlManipulator = new HtmlManipulator();
-  }
-
-  async getPageContent(url: string) {
-    return await axios
-      .get(url)
-      .then((res) => res.data);
-  }
-
-  getNewsTitle(selector: string) {
-    return this.htmlManipulator.getText(
-      this.htmlManipulator.querySelectorAll(selector)[0]
-    );
+    super(url, source, titleSelector, contentSelector);
   }
 
   getNewsContent(selector: string) {
@@ -48,6 +35,8 @@ export class NewsPageContentExtractor implements NewsPageContentExtractorInterfa
     if(this.contentSelector instanceof Array) {
       for(let i = 0; i < this.contentSelector.length; i++) {
         const contentFound = this.getNewsContent(this.contentSelector[i]);
+        console.log(">>>>>selector", this.contentSelector[i])
+        console.log('contentFound', contentFound, compactText(contentFound).length)
         if(compactText(contentFound).length > 100) {
           content = contentFound;
           break;
