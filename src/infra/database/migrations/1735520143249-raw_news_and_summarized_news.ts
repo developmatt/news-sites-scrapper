@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class RawNewsEntity1735415601633 implements MigrationInterface {
-    name = 'RawNewsEntity1735415601633'
+export class RawNewsAndSummarizedNews1735520143249 implements MigrationInterface {
+    name = 'RawNewsAndSummarizedNews1735520143249'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
@@ -31,6 +31,9 @@ export class RawNewsEntity1735415601633 implements MigrationInterface {
         `);
         await queryRunner.query(`
             CREATE TABLE "raw_news_entity" (
+                "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+                "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+                "deletedAt" TIMESTAMP WITH TIME ZONE,
                 "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
                 "title" text NOT NULL,
                 "content" text NOT NULL,
@@ -62,12 +65,19 @@ export class RawNewsEntity1735415601633 implements MigrationInterface {
             )
         `);
         await queryRunner.query(`
+            CREATE TYPE "public"."summarized_news_entity_mood_enum" AS ENUM('positive', 'negative', 'neutral')
+        `);
+        await queryRunner.query(`
             CREATE TABLE "summarized_news_entity" (
+                "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+                "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+                "deletedAt" TIMESTAMP WITH TIME ZONE,
                 "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
                 "title" text NOT NULL,
                 "content" text NOT NULL,
                 "tags" text array NOT NULL,
                 "categories" "public"."summarized_news_entity_categories_enum" array NOT NULL,
+                "mood" "public"."summarized_news_entity_mood_enum" NOT NULL,
                 "rawNewsId" uuid,
                 CONSTRAINT "REL_c36fbf62d4464295923694b6b4" UNIQUE ("rawNewsId"),
                 CONSTRAINT "PK_f9ed2dd4565625f953e462201c8" PRIMARY KEY ("id")
@@ -85,6 +95,9 @@ export class RawNewsEntity1735415601633 implements MigrationInterface {
         `);
         await queryRunner.query(`
             DROP TABLE "summarized_news_entity"
+        `);
+        await queryRunner.query(`
+            DROP TYPE "public"."summarized_news_entity_mood_enum"
         `);
         await queryRunner.query(`
             DROP TYPE "public"."summarized_news_entity_categories_enum"

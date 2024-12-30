@@ -1,9 +1,10 @@
-import { Column, Entity, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 import { RawNewsCategoryEnum } from "../../../enums/raw-news-category.enum";
 import { SourcesEnum } from "../../../enums/sources.enum";
+import { AbstractEntity } from "../../../infra/database/entity/abstract.entity";
 
 @Entity()
-export class RawNewsEntity {
+export class RawNewsEntity extends AbstractEntity {
   @PrimaryColumn({ type: 'text' })
   @PrimaryGeneratedColumn('uuid')
   id: string;
