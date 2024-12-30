@@ -1,5 +1,5 @@
-import { RawNewsEntity } from "../repositories/raw-news-repository/entities/raw-news.entity";
+import { ExtractedRawNewsDto } from "../../repositories/raw-news-repository/dto/extracted-raw-news.dto";
 
 export interface NewsPageContentExtractorInterface {
-  extract(): Promise<RawNewsEntity>;
+  extract(): Promise<ExtractedRawNewsDto>;
 }

@@ -1,6 +1,6 @@
 import OpenAIPackage from 'openai';
-import { CONFIG } from '../config/config';
-import { AiInterface } from '../core/ai/ai.interface';
+import { CONFIG } from '../../config/config';
+import { AiInterface } from '../../core/ai/ai.interface';
 import { ChatCompletionMessageParam, ChatCompletionUserMessageParam } from 'openai/resources';
 
 export class OpenAI implements AiInterface {

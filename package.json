@@ -7,7 +7,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/index.js",
     "build": "tsc",
-    "dev": "node --env-file=.env --import=tsx --watch ./src/index.ts"
+    "dev": "node --env-file=.env --import=tsx --watch ./src/index.ts",
+    "typeorm": "yarn run build && npx typeorm -d dist/src/infra/database/data-source.js",
+    "migrate:gen": "yarn run build && cd src/infra/database/migrations/ && npx typeorm -d ../../../../dist/src/infra/database/data-source.js migration:generate -p",
+    "migrate:latest": "yarn typeorm migration:run",
+    "migrate:rollback": "yarn typeorm migration:revert"
   },
   "keywords": [],
   "author": "",
@@ -21,7 +25,10 @@
     "cheerio": "^1.0.0",
     "dotenv": "^16.4.7",
     "openai": "^4.77.0",
+    "pg": "^8.13.1",
     "puppeteer": "^23.11.1",
-    "tsx": "^4.19.2"
+    "reflect-metadata": "^0.2.2",
+    "tsx": "^4.19.2",
+    "typeorm": "^0.3.20"
   }
 }
