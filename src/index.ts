@@ -5,10 +5,10 @@ import { selectRawNewsToSummarize } from "./core/select-raw-news-to-summarize";
 import { AppDataSource } from "./infra/database/data-source";
 import { OpenAIMock } from "./lib/open-ai/open-ai-mock.class";
 import { OpenAI } from "./lib/open-ai/open-ai.class";
-import "reflect-metadata";
 import { SummarizedNewsRepository } from "./repositories/summarized-news-repository/summarized-news-repository.repository";
 import { RawNewsCategoryEnum } from "./enums/raw-news-category.enum";
 import { SummarizedNewMoodsEnum } from "./enums/summarized-new-moods.enum";
+import "reflect-metadata";
 
 AppDataSource.initialize()
   .then(async () => {
@@ -27,14 +27,14 @@ AppDataSource.initialize()
 
     const summarizedRepository = new SummarizedNewsRepository();
     await Promise.all(
-      summarized.map(async (item) => {
+      summarized.map(async (item, index) => {
         await summarizedRepository.create({
           title: item.title,
           content: item.content,
           tags: item.tags,
           categories: item.categories.map((category) => RawNewsCategoryEnum[category.toUpperCase().replace(/\s+/g, '_') as unknown as keyof typeof RawNewsCategoryEnum]),
           mood: SummarizedNewMoodsEnum[item.mood.toUpperCase() as keyof typeof SummarizedNewMoodsEnum],
-          rawNewsId: item.id,
+          rawNews: news[index],
         });
       })
     );
