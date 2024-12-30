@@ -1,6 +1,6 @@
 import { CONFIG } from "./config/config";
 import { Ai } from "./core/ai/ai.class";
-import { extractNews } from "./core/extract-news";
+import { extractNews } from "./core/extract-news/extract-news";
 import { selectRawNewsToSummarize } from "./core/select-raw-news-to-summarize";
 import { AppDataSource } from "./infra/database/data-source";
 import { OpenAIMock } from "./lib/open-ai/open-ai-mock.class";

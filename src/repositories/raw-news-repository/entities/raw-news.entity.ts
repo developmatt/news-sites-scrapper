@@ -15,9 +15,9 @@ export class RawNewsEntity extends AbstractEntity {
   @Column({ type: 'text' })
   content: string;
 
-  @Column({ type: 'enum', enum: SourcesEnum })
-  source: SourcesEnum;
+  @Column({ type: 'text' })
+  source: string;
 
-  @Column({ type: 'enum', enum: RawNewsCategoryEnum })
-  rawCategory: RawNewsCategoryEnum;
+  @Column({ type: 'text' })
+  rawCategory: string;
 }
