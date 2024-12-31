@@ -9,6 +9,8 @@ import { SummarizedNewsRepository } from "./repositories/summarized-news-reposit
 import { RawNewsCategoryEnum } from "./enums/raw-news-category.enum";
 import { SummarizedNewMoodsEnum } from "./enums/summarized-new-moods.enum";
 import "reflect-metadata";
+import { DeepseekMock } from "./lib/deepseek/deepseek-mock.class";
+import { Deepseek } from "./lib/deepseek/deepseek.class";
 
 AppDataSource.initialize()
   .then(async () => {
@@ -21,7 +23,7 @@ AppDataSource.initialize()
       });
     });
 
-    const openAIDep = CONFIG.isProd ? new OpenAI() : new OpenAIMock();
+    const openAIDep = CONFIG.isProd ? new Deepseek() : new DeepseekMock();
     const ai = new Ai(openAIDep);
     const summarized = await ai.summarizeTexts(contentsArray);
 
