@@ -8,7 +8,6 @@ import { NewsPageContentExtractor } from "../news-page-content-extractor/news-pa
 export const extractNews = async () => {
   const rawNewsRepository = new RawNewsRepository();
 
-
   //SPORTS
   const itatiaiaSports = new HomePageNewsLinksExtractor(
     SourcesEnum.ITATIAIA_SPORTS,
@@ -28,13 +27,13 @@ export const extractNews = async () => {
         );
         const rawNews = await contentExtractor.extract();
         const content = compactText(rawNews.content);
-        if(!content) throw new Error("Content not found");
+        if (!content) throw new Error("Content not found");
         await rawNewsRepository.create({
           ...rawNews,
-          content
+          content,
         });
-      } catch(e) {
-        console.log(e)
+      } catch (e) {
+        console.log(e);
       }
     })
   );
@@ -57,17 +56,16 @@ export const extractNews = async () => {
         );
         const rawNews = await contentExtractor.extract();
         const content = compactText(rawNews.content);
-        if(!content) throw new Error("Content not found");
+        if (!content) throw new Error("Content not found");
         await rawNewsRepository.create({
           ...rawNews,
-          content
+          content,
         });
-      } catch(e) {
-        console.log(e)
+      } catch (e) {
+        console.log(e);
       }
     })
   );
-
 
   //FINANCE
   const fdrFinance = new HomePageNewsLinksExtractor(
@@ -88,13 +86,13 @@ export const extractNews = async () => {
         );
         const rawNews = await contentExtractor.extract();
         const content = compactText(rawNews.content);
-        if(!content) throw new Error("Content not found");
+        if (!content) throw new Error("Content not found");
         await rawNewsRepository.create({
           ...rawNews,
-          content
+          content,
         });
-      } catch(e) {
-        console.log(e)
+      } catch (e) {
+        console.log(e);
       }
     })
   );
@@ -118,13 +116,13 @@ export const extractNews = async () => {
         );
         const rawNews = await cnnNewsRawContentExtractor.extract();
         const content = compactText(rawNews.content);
-        if(!content) throw new Error("Content not found");
+        if (!content) throw new Error("Content not found");
         await rawNewsRepository.create({
           ...rawNews,
-          content
+          content,
         });
-      } catch(e) {
-        console.log(e)
+      } catch (e) {
+        console.log(e);
       }
     })
   );
@@ -147,13 +145,13 @@ export const extractNews = async () => {
         );
         const rawNews = await g1NewsRawContentExtractor.extract();
         const content = compactText(rawNews.content);
-        if(!content) throw new Error("Content not found");
+        if (!content) throw new Error("Content not found");
         await rawNewsRepository.create({
           ...rawNews,
-          content
+          content,
         });
-      } catch(e) {
-        console.log(e)
+      } catch (e) {
+        console.log(e);
       }
     })
   );
@@ -167,19 +165,23 @@ export const extractNews = async () => {
 
   await Promise.all(
     r7Links.map(async (link) => {
-      const r7NewsRawContentExtractor = new NewsPageContentExtractor(
-        link,
-        SourcesEnum.R7_NEWS,
-        "h1",
-        "article"
-      );
-      const rawNews = await r7NewsRawContentExtractor.extract();
-      const content = compactText(rawNews.content);
-      if(!content) throw new Error("Content not found");
-      await rawNewsRepository.create({
-        ...rawNews,
-        content
-      });
+      try {
+        const r7NewsRawContentExtractor = new NewsPageContentExtractor(
+          link,
+          SourcesEnum.R7_NEWS,
+          "h1",
+          "article"
+        );
+        const rawNews = await r7NewsRawContentExtractor.extract();
+        const content = compactText(rawNews.content);
+        if (!content) throw new Error("Content not found");
+        await rawNewsRepository.create({
+          ...rawNews,
+          content,
+        });
+      } catch (e) {
+        console.log(e);
+      }
     })
   );
-}
+};
