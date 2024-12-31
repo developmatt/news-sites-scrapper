@@ -1,44 +1,33 @@
-import { CONFIG } from "./config/config";
-import { Ai } from "./core/ai/ai.class";
-import { extractNews } from "./core/extract-news/extract-news";
-import { selectRawNewsToSummarize } from "./core/select-raw-news-to-summarize";
 import { AppDataSource } from "./infra/database/data-source";
-import { OpenAIMock } from "./lib/open-ai/open-ai-mock.class";
-import { OpenAI } from "./lib/open-ai/open-ai.class";
-import { SummarizedNewsRepository } from "./repositories/summarized-news-repository/summarized-news-repository.repository";
-import { RawNewsCategoryEnum } from "./enums/raw-news-category.enum";
-import { SummarizedNewMoodsEnum } from "./enums/summarized-new-moods.enum";
 import "reflect-metadata";
-import { DeepseekMock } from "./lib/deepseek/deepseek-mock.class";
-import { Deepseek } from "./lib/deepseek/deepseek.class";
+import { runScrapper } from "./core/run-scrapper/run-scrapper";
+import http from "http";
+import url from "url";
+import { getHomePageNews } from "./core/home-page-news/get-home-page-news";
+import { CONFIG } from "./config/config";
 
 AppDataSource.initialize()
   .then(async () => {
-    await extractNews();
-    const news = await selectRawNewsToSummarize();
-    const contentsArray = news?.map((item) => {
-      return JSON.stringify({
-        id: item.id,
-        content: item.content,
-      });
+    const hostname = CONFIG.host;
+    const port = CONFIG.port
+    const server = http.createServer(async (req, res) => {
+      const reqUrl = url.parse(req.url ?? "").pathname;
+
+      if (reqUrl == "/") {
+        const content = await getHomePageNews();
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.write(JSON.stringify(content));
+        return res.end();
+      }
+      
+      if (reqUrl == "/scrapper") {
+        await runScrapper();
+        return res.end();
+      }
     });
 
-    const openAIDep = CONFIG.isProd ? new Deepseek() : new DeepseekMock();
-    const ai = new Ai(openAIDep);
-    const summarized = await ai.summarizeTexts(contentsArray);
-
-    const summarizedRepository = new SummarizedNewsRepository();
-    await Promise.all(
-      summarized.map(async (item, index) => {
-        await summarizedRepository.create({
-          title: item.title,
-          content: item.content,
-          tags: item.tags,
-          categories: item.categories.map((category) => RawNewsCategoryEnum[category.toUpperCase().replace(/\s+/g, '_') as unknown as keyof typeof RawNewsCategoryEnum]),
-          mood: SummarizedNewMoodsEnum[item.mood.toUpperCase() as keyof typeof SummarizedNewMoodsEnum],
-          rawNews: news[index],
-        });
-      })
-    );
+    server.listen(port, hostname, () => {
+      console.log(`Server running at port ${port}`);
+    });
   })
   .catch((error) => console.log(error));

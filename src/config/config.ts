@@ -3,6 +3,8 @@ import 'dotenv/config';
 export const CONFIG = {
   env: process.env.NODE_ENV,
   isProd: process.env.NODE_ENV === 'production',
+  host: process.env.HOST,
+  port: Number(process.env.PORT),
   newsLimitPerSite: Number(process.env.NEWS_LIMIT_PER_SITE),
   openAiApiKey: process.env.OPENAI_API_KEY,
   deepseekApiKey: process.env.DEEPSEEK_API_KEY,
