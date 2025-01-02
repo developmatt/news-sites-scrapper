@@ -5,8 +5,9 @@ import { DeepseekMock } from "../../lib/deepseek/deepseek-mock.class";
 import { Deepseek } from "../../lib/deepseek/deepseek.class";
 import { SummarizedNewsRepository } from "../../repositories/summarized-news-repository/summarized-news-repository.repository";
 import { Ai } from "../ai/ai.class";
-import { extractNews } from "../extract-news/extract-news";
+import { extractNews } from "../raw-news/extract-news/extract-news";
 import { selectRawNewsToSummarize } from "../select-raw-news-to-summarize";
+import { MapSummarizedNewsToStoreUsecase } from "../summarized-news/map-summarized-news-to-store.use-case";
 
 export const runScrapper = async (): Promise<void> => {
   await extractNews();
@@ -23,28 +24,10 @@ export const runScrapper = async (): Promise<void> => {
   const summarized = await ai.summarizeTexts(contentsArray);
 
   const summarizedRepository = new SummarizedNewsRepository();
+  const mapSummarizedNewsToStoreUsecase = new MapSummarizedNewsToStoreUsecase();
   await Promise.all(
     summarized.map(async (item, index) => {
-      await summarizedRepository.create({
-        title: item.title,
-        content: item.content,
-        tags: item.tags,
-        categories: item.categories.map(
-          (category) =>
-            RawNewsCategoryEnum[
-              category
-                .toUpperCase()
-                .replace(
-                  /\s+/g,
-                  "_"
-                ) as unknown as keyof typeof RawNewsCategoryEnum
-            ]
-        ),
-        mood: SummarizedNewMoodsEnum[
-          item.mood.toUpperCase() as keyof typeof SummarizedNewMoodsEnum
-        ],
-        rawNews: news[index],
-      });
+      await summarizedRepository.create(mapSummarizedNewsToStoreUsecase.execute(item, news[index]));
     })
   );
 };

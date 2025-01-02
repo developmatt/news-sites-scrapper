@@ -3,8 +3,8 @@ import "reflect-metadata";
 import { runScrapper } from "./core/run-scrapper/run-scrapper";
 import http from "http";
 import url from "url";
-import { getHomePageNews } from "./core/home-page-news/get-home-page-news";
 import { CONFIG } from "./config/config";
+import { getHomePageNews } from "./core/raw-news/home-page-news/get-home-page-news";
 
 AppDataSource.initialize()
   .then(async () => {
