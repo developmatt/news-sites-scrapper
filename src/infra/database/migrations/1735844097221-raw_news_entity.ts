@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class RawNewsAndSummarizedNews1735597137117 implements MigrationInterface {
-    name = 'RawNewsAndSummarizedNews1735597137117'
+export class RawNewsEntity1735844097221 implements MigrationInterface {
+    name = 'RawNewsEntity1735844097221'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
@@ -13,7 +13,7 @@ export class RawNewsAndSummarizedNews1735597137117 implements MigrationInterface
                 "title" text NOT NULL,
                 "content" text NOT NULL,
                 "source" text NOT NULL,
-                "rawCategory" text NOT NULL,
+                "category" text NOT NULL,
                 CONSTRAINT "PK_bd12a2f85df8c176ee373bee353" PRIMARY KEY ("id")
             )
         `);

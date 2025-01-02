@@ -1,4 +1,4 @@
-import { FindManyOptions } from "typeorm";
+import { FindManyOptions, FindOptionsWhere } from "typeorm";
 import { AppDataSource } from "../../infra/database/data-source";
 import { DatabaseInterface } from "../../infra/database/database.interface";
 import { CreateSummarizedNewsDto } from "./dto/create-summarized-news.dto";
@@ -23,6 +23,12 @@ export class SummarizedNewsRepository implements DatabaseInterface {
     options?: FindManyOptions<SummarizedNewsEntity>
   ): Promise<SummarizedNewsEntity[]> {
     return repository.find(options);
+  }
+
+  async findOne(entity: Partial<SummarizedNewsEntity>) {
+    return repository.findOne({
+      where: entity as FindOptionsWhere<SummarizedNewsEntity>
+  });
   }
 
   async getRepository() {

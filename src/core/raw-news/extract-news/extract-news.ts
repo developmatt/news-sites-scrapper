@@ -1,12 +1,13 @@
-import { SourcesEnum } from "../../enums/sources.enum";
-import { RawNewsRepository } from "../../repositories/raw-news-repository/raw-news-repository.repository";
-import { compactText } from "../../utils/compactText";
+import { SourcesEnum } from "../../../enums/sources.enum";
+import { RawNewsRepository } from "../../../repositories/raw-news-repository/raw-news-repository.repository";
 import { HomePageNewsLinksExtractor } from "../home-page-news-links-extractor/home-page-news-links-extractor.class";
 import { GloboSportsNewsPageContentExtractor } from "../news-page-content-extractor/globo-sports-news-page-content-extractor.class";
 import { NewsPageContentExtractor } from "../news-page-content-extractor/news-page-content-extractor.class";
+import { StoreUniqueRawNewsUseCase } from "../store-unique-raw-news.use-case";
 
 export const extractNews = async () => {
   const rawNewsRepository = new RawNewsRepository();
+  const storeUniqueRawNewsUseCase = new StoreUniqueRawNewsUseCase(rawNewsRepository);
 
   //SPORTS
   const itatiaiaSports = new HomePageNewsLinksExtractor(
@@ -19,19 +20,14 @@ export const extractNews = async () => {
   await Promise.all(
     itatiaiaLinks.map(async (link) => {
       try {
-        const contentExtractor = new GloboSportsNewsPageContentExtractor(
+        const contentExtractor = new NewsPageContentExtractor(
           link,
           SourcesEnum.GLOBO_SPORTS,
           "h1",
           "main"
         );
         const rawNews = await contentExtractor.extract();
-        const content = compactText(rawNews.content);
-        if (!content) throw new Error("Content not found");
-        await rawNewsRepository.create({
-          ...rawNews,
-          content,
-        });
+        await storeUniqueRawNewsUseCase.execute(rawNews)
       } catch (e) {
         console.log(e);
       }
@@ -55,12 +51,8 @@ export const extractNews = async () => {
           "article"
         );
         const rawNews = await contentExtractor.extract();
-        const content = compactText(rawNews.content);
-        if (!content) throw new Error("Content not found");
-        await rawNewsRepository.create({
-          ...rawNews,
-          content,
-        });
+        await storeUniqueRawNewsUseCase.execute(rawNews)
+        
       } catch (e) {
         console.log(e);
       }
@@ -85,19 +77,14 @@ export const extractNews = async () => {
           "article"
         );
         const rawNews = await contentExtractor.extract();
-        const content = compactText(rawNews.content);
-        if (!content) throw new Error("Content not found");
-        await rawNewsRepository.create({
-          ...rawNews,
-          content,
-        });
+        await storeUniqueRawNewsUseCase.execute(rawNews)
       } catch (e) {
         console.log(e);
       }
     })
   );
 
-  //Politics
+  // //Politics
   const cnnHomeLinks = new HomePageNewsLinksExtractor(
     SourcesEnum.CNN_NEWS,
     ".home__list__item a"
@@ -115,12 +102,7 @@ export const extractNews = async () => {
           "article"
         );
         const rawNews = await cnnNewsRawContentExtractor.extract();
-        const content = compactText(rawNews.content);
-        if (!content) throw new Error("Content not found");
-        await rawNewsRepository.create({
-          ...rawNews,
-          content,
-        });
+        await storeUniqueRawNewsUseCase.execute(rawNews)
       } catch (e) {
         console.log(e);
       }
@@ -144,12 +126,7 @@ export const extractNews = async () => {
           "article"
         );
         const rawNews = await g1NewsRawContentExtractor.extract();
-        const content = compactText(rawNews.content);
-        if (!content) throw new Error("Content not found");
-        await rawNewsRepository.create({
-          ...rawNews,
-          content,
-        });
+        await storeUniqueRawNewsUseCase.execute(rawNews)
       } catch (e) {
         console.log(e);
       }
@@ -173,12 +150,7 @@ export const extractNews = async () => {
           "article"
         );
         const rawNews = await r7NewsRawContentExtractor.extract();
-        const content = compactText(rawNews.content);
-        if (!content) throw new Error("Content not found");
-        await rawNewsRepository.create({
-          ...rawNews,
-          content,
-        });
+        await storeUniqueRawNewsUseCase.execute(rawNews)
       } catch (e) {
         console.log(e);
       }

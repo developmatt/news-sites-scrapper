@@ -1,7 +1,3 @@
-import axios from "axios";
-import { RawNewsEntity } from "../../repositories/raw-news-repository/entities/raw-news.entity";
-import { NewsPageContentExtractorInterface } from "./news-page-content-extractor.interface";
-import { HtmlManipulator } from "../../lib/html-manipulator.class";
 import { SourcesEnum } from "../../enums/sources.enum";
 import { ExtractedRawNewsDto } from "../../repositories/raw-news-repository/dto/extracted-raw-news.dto";
 import { SourcesCategoriesEnum } from "../../config/sources-categories";
@@ -34,21 +30,22 @@ export class GloboSportsNewsPageContentExtractor extends NewsPageContentExtracto
 
     if(this.contentSelector instanceof Array) {
       for(let i = 0; i < this.contentSelector.length; i++) {
-        const contentFound = this.getNewsContent(this.contentSelector[i]);
-        console.log(">>>>>selector", this.contentSelector[i])
-        console.log('contentFound', contentFound, compactText(contentFound).length)
-        if(compactText(contentFound).length > 100) {
+        const contentFoundUncompacted = this.getNewsContent(this.contentSelector[i]);
+        const contentFound = compactText(contentFoundUncompacted);
+        if(contentFound.length > 100) {
           content = contentFound;
           break;
         }
       }
     } else {
-      content = this.getNewsContent(this.contentSelector);
+      content = compactText(this.getNewsContent(this.contentSelector));
     }
+
+    if(!content) throw new Error('Content not found');
 
     const rawNewsEntity: ExtractedRawNewsDto = {
       title,
-      content,
+      content: compactText(content),
       source: this.source,
       category: SourcesCategoriesEnum[this.source]
     }

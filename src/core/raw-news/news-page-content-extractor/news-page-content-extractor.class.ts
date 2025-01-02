@@ -47,14 +47,15 @@ export class NewsPageContentExtractor implements NewsPageContentExtractorInterfa
 
     if(this.contentSelector instanceof Array) {
       for(let i = 0; i < this.contentSelector.length; i++) {
-        const contentFound = this.getNewsContent(this.contentSelector[i]);
-        if(compactText(contentFound).length > 100) {
+        const contentFoundUncompacted = this.getNewsContent(this.contentSelector[i]);
+        const contentFound = compactText(contentFoundUncompacted);
+        if(contentFound.length > 100) {
           content = contentFound;
           break;
         }
       }
     } else {
-      content = this.getNewsContent(this.contentSelector);
+      content = compactText(this.getNewsContent(this.contentSelector));
     }
 
     const rawNewsEntity: ExtractedRawNewsDto = {
