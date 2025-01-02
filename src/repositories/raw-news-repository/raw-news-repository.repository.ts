@@ -47,7 +47,7 @@ export class RawNewsRepository implements DatabaseInterface {
       },
     });
 
-    const ids = summarizedNews.map((item) => item.rawNews.id) ?? [];
+    const ids = summarizedNews.map((item) => item?.rawNews?.id) ?? [];
 
     const query = repository
       .createQueryBuilder("raw_news");
