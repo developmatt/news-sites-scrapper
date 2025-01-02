@@ -1,5 +1,5 @@
-import { ExtractedRawNewsDto } from "../../repositories/raw-news-repository/dto/extracted-raw-news.dto";
+import { ExtractedRawNewsDto } from "../../../repositories/raw-news-repository/dto/extracted-raw-news.dto";
 
 export interface NewsPageContentExtractorInterface {
-  extract(): Promise<ExtractedRawNewsDto>;
+  extract(url: string): Promise<ExtractedRawNewsDto>;
 }

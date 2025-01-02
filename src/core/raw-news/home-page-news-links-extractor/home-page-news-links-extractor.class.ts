@@ -1,9 +1,10 @@
 import axios from "axios";
-import { HtmlManipulator } from "../../lib/html-manipulator.class";
-import { CONFIG } from "../../config/config";
 import { HomePageNewsLinksExtractorInterface } from "./home-page-news-links-extractor.interface";
-import { SourcesEnum } from "../../enums/sources.enum";
-import { SOURCES_LINKS } from "../../config/sources-links";
+import { HtmlManipulator } from "../../../lib/html-manipulator.class";
+import { SourcesEnum } from "../../../enums/sources.enum";
+import { CONFIG } from "../../../config/config";
+import { SOURCES_LINKS } from "../../../config/sources-links";
+
 
 export class HomePageNewsLinksExtractor implements HomePageNewsLinksExtractorInterface {
   private htmlManipulator: HtmlManipulator;

@@ -1,16 +1,14 @@
 import axios from "axios";
-import { RawNewsEntity } from "../../repositories/raw-news-repository/entities/raw-news.entity";
 import { NewsPageContentExtractorInterface } from "./news-page-content-extractor.interface";
-import { HtmlManipulator } from "../../lib/html-manipulator.class";
-import { SourcesEnum } from "../../enums/sources.enum";
-import { ExtractedRawNewsDto } from "../../repositories/raw-news-repository/dto/extracted-raw-news.dto";
-import { SourcesCategoriesEnum } from "../../config/sources-categories";
-import { compactText } from "../../utils/compactText";
+import { HtmlManipulator } from "../../../lib/html-manipulator.class";
+import { SourcesEnum } from "../../../enums/sources.enum";
+import { ExtractedRawNewsDto } from "../../../repositories/raw-news-repository/dto/extracted-raw-news.dto";
+import { compactText } from "../../../utils/compactText";
+import { SourcesCategoriesEnum } from "../../../config/sources-categories";
 
 export class NewsPageContentExtractor implements NewsPageContentExtractorInterface {
   protected htmlManipulator: HtmlManipulator;
   constructor(
-    protected readonly url: string,
     protected readonly source: SourcesEnum,
     protected readonly titleSelector: string,
     protected readonly contentSelector: string | string[]
@@ -37,8 +35,8 @@ export class NewsPageContentExtractor implements NewsPageContentExtractorInterfa
     );
   }
   
-  async extract(): Promise<ExtractedRawNewsDto> {
-    const pageContent = await this.getPageContent(this.url);
+  async extract(url: string): Promise<ExtractedRawNewsDto> {
+    const pageContent = await this.getPageContent(url);
     this.htmlManipulator.load(pageContent.toString());
 
     const title = this.getNewsTitle(this.titleSelector);
@@ -57,6 +55,8 @@ export class NewsPageContentExtractor implements NewsPageContentExtractorInterfa
     } else {
       content = compactText(this.getNewsContent(this.contentSelector));
     }
+
+    if(!content) throw new Error('Content not found');
 
     const rawNewsEntity: ExtractedRawNewsDto = {
       title,

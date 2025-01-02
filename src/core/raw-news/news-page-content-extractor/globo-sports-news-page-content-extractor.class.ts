@@ -1,17 +1,16 @@
-import { SourcesEnum } from "../../enums/sources.enum";
-import { ExtractedRawNewsDto } from "../../repositories/raw-news-repository/dto/extracted-raw-news.dto";
-import { SourcesCategoriesEnum } from "../../config/sources-categories";
-import { compactText } from "../../utils/compactText";
+import { SourcesCategoriesEnum } from "../../../config/sources-categories";
+import { SourcesEnum } from "../../../enums/sources.enum";
+import { ExtractedRawNewsDto } from "../../../repositories/raw-news-repository/dto/extracted-raw-news.dto";
+import { compactText } from "../../../utils/compactText";
 import { NewsPageContentExtractor } from "./news-page-content-extractor.class";
 
 export class GloboSportsNewsPageContentExtractor extends NewsPageContentExtractor {
   constructor(
-    url: string,
     source: SourcesEnum,
     titleSelector: string,
     contentSelector: string | string[]
   ) {
-    super(url, source, titleSelector, contentSelector);
+    super(source, titleSelector, contentSelector);
   }
 
   getNewsContent(selector: string) {
@@ -20,8 +19,8 @@ export class GloboSportsNewsPageContentExtractor extends NewsPageContentExtracto
     );
   }
   
-  async extract(): Promise<ExtractedRawNewsDto> {
-    const pageContent = await this.getPageContent(this.url);
+  async extract(url: string): Promise<ExtractedRawNewsDto> {
+    const pageContent = await this.getPageContent(url);
     this.htmlManipulator.load(pageContent.toString());
 
     const title = this.getNewsTitle(this.titleSelector);

@@ -18,4 +18,9 @@ export class LocalStorer implements DatabaseInterface {
         return;
       }
     }
+
+  async findOne(entity: any): Promise<any | null> {
+    throw new Error('Method not implemented.');
+    return null;
+  }
 }
