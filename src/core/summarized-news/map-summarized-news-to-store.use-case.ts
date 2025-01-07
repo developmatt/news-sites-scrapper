@@ -1,6 +1,6 @@
-import { RawNewsCategoryEnum } from "../../enums/raw-news-category.enum";
-import { SummarizedNewMoodsEnum } from "../../enums/summarized-new-moods.enum";
-import { RawNewsEntity } from "../../repositories/raw-news-repository/entities/raw-news.entity";
+import { RawNewsCategoryEnum } from "../../../app/enums/raw-news-category.enum";
+import { SummarizedNewMoodsEnum } from "../../../app/enums/summarized-new-moods.enum";
+import { RawNewsEntity } from "../../../app/use-cases/raw-news/entities/raw-news.entity";
 import { AiSummaryNewResponseDto } from "../../repositories/summarized-news-repository/dto/ai-summary-new-response.dto";
 import { CreateSummarizedNewsDto } from "../../repositories/summarized-news-repository/dto/create-summarized-news.dto";
 

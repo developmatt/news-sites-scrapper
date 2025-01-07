@@ -1,5 +1,5 @@
-import { RawNewsCategoryEnum } from "../../../enums/raw-news-category.enum";
-import { SummarizedNewMoodsEnum } from "../../../enums/summarized-new-moods.enum";
+import { RawNewsCategoryEnum } from "../../../../app/enums/raw-news-category.enum";
+import { SummarizedNewMoodsEnum } from "../../../../app/enums/summarized-new-moods.enum";
 
 export class AiSummaryNewResponseDto {
   id: string;

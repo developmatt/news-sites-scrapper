@@ -1,8 +1,7 @@
 import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
-import { RawNewsCategoryEnum } from "../../../enums/raw-news-category.enum";
-import { RawNewsEntity } from "../../raw-news-repository/entities/raw-news.entity";
+import { RawNewsEntity } from "../../../../app/use-cases/raw-news/entities/raw-news.entity";
 import { AbstractEntity } from "../../../infra/database/entity/abstract.entity";
-import { SummarizedNewMoodsEnum } from "../../../enums/summarized-new-moods.enum";
+import { SummarizedNewMoodsEnum } from "../../../../app/enums/summarized-new-moods.enum";
 
 @Entity()
 export class SummarizedNewsEntity extends AbstractEntity {

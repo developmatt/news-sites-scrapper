@@ -4,7 +4,7 @@ import { runScrapper } from "./core/run-scrapper/run-scrapper";
 import http from "http";
 import url from "url";
 import { CONFIG } from "./config/config";
-import { getHomePageNews } from "./core/raw-news/home-page-news/get-home-page-news";
+import { getHomePageNews } from "../app/use-cases/raw-news/home-page-news/get-home-page-news";
 
 AppDataSource.initialize()
   .then(async () => {

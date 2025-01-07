@@ -3,7 +3,7 @@ import { AppDataSource } from "../../infra/database/data-source";
 import { DatabaseInterface } from "../../infra/database/database.interface";
 import { CreateSummarizedNewsDto } from "./dto/create-summarized-news.dto";
 import { SummarizedNewsEntity } from "./entities/summarized-news.entity";
-import { RawNewsCategoryEnum } from "../../enums/raw-news-category.enum";
+import { RawNewsCategoryEnum } from "../../../app/enums/raw-news-category.enum";
 
 const repository = AppDataSource.getRepository(SummarizedNewsEntity);
 
