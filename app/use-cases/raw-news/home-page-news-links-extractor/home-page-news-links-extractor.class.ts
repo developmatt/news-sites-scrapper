@@ -1,9 +1,9 @@
 import axios from "axios";
 import { HomePageNewsLinksExtractorInterface } from "./home-page-news-links-extractor.interface";
-import { HtmlManipulator } from "../../../../src/lib/html-manipulator.class";
 import { SourcesEnum } from "../../../enums/sources.enum";
 import { CONFIG } from "../../../config/config";
 import { SOURCES_LINKS } from "../../../config/sources-links";
+import { HtmlManipulator } from "@/app/lib/html-manipulator.class";
 
 
 export class HomePageNewsLinksExtractor implements HomePageNewsLinksExtractorInterface {
@@ -24,7 +24,7 @@ export class HomePageNewsLinksExtractor implements HomePageNewsLinksExtractorInt
     this.htmlManipulator.load(homeContent.toString());
     const feedPosts = this.htmlManipulator
       .querySelectorAll(selector)
-      .map((_: number, item: any) => {
+      .map((_: number, item: Element) => {
         return this.htmlManipulator.getAttribute(item, "href");
       });
 

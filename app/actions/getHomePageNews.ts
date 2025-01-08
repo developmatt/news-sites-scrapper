@@ -1,8 +1,8 @@
-import { getHomePageNewsRepository } from "../repository/raw-news/get-home-news.repository";
+import { GetHomePageNewsUseCase } from "../use-cases/summarized-news/get-home-page-news.use-case";
+import { SummarizedNewsRepository } from "../use-cases/summarized-news/summarized-news-repository.repository";
 
 export const getHomePageNewsAction = async () => {
-  const rawNewsRepository = await getHomePageNewsRepository();
-  console.log(">>>rawNewsRepository");
-  console.log(rawNewsRepository);
-  return rawNewsRepository;
+  const repository = new SummarizedNewsRepository()
+  const getHomePageNewsUseCase = new GetHomePageNewsUseCase(repository);
+  return getHomePageNewsUseCase.execute();
 };

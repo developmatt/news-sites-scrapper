@@ -1,5 +1,5 @@
+import { AiSummaryNewResponseDto } from "@/app/use-cases/summarized-news/dto/ai-summary-new-response.dto";
 import { CONFIG } from "../../config/config";
-import { AiSummaryNewResponseDto } from "../../repositories/summarized-news-repository/dto/ai-summary-new-response.dto";
 import { AiInterface } from "./ai.interface";
 
 export class Ai {
@@ -7,7 +7,7 @@ export class Ai {
 
   async summarizeTexts(texts: string[]): Promise<AiSummaryNewResponseDto[]> {
     let index = 0;
-    let textsToProcess: string[][] = [];
+    const textsToProcess: string[][] = [];
 
     do {
       textsToProcess.push(

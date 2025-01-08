@@ -12,62 +12,66 @@ export const extractNews = async () => {
     rawNewsRepository
   );
 
-  //SPORTS
-  new GetLinksExtractContentStoreNewsUseCase(
-    new HomePageNewsLinksExtractor(
-      SourcesEnum.ITATIAIA_SPORTS,
-      ".PageList-items a"
-    ),
-    new NewsPageContentExtractor(SourcesEnum.ITATIAIA_SPORTS, "h1", "main"),
-    storeUniqueRawNewsUseCase
-  ).execute();
+  return await Promise.all([
+    new GetLinksExtractContentStoreNewsUseCase(
+      new HomePageNewsLinksExtractor(
+        SourcesEnum.ITATIAIA_SPORTS,
+        ".PageList-items a"
+      ),
+      new NewsPageContentExtractor(SourcesEnum.ITATIAIA_SPORTS, "h1", "main"),
+      storeUniqueRawNewsUseCase
+    ).execute(),
 
-  new GetLinksExtractContentStoreNewsUseCase(
-    new HomePageNewsLinksExtractor(
-      SourcesEnum.GLOBO_SPORTS,
-      ".feed-post-body-title a"
-    ),
-    new GloboSportsNewsPageContentExtractor(
-      SourcesEnum.GLOBO_SPORTS,
-      "h1",
-      "article"
-    ),
-    storeUniqueRawNewsUseCase
-  ).execute();
+    new GetLinksExtractContentStoreNewsUseCase(
+      new HomePageNewsLinksExtractor(
+        SourcesEnum.GLOBO_SPORTS,
+        ".feed-post-body-title a"
+      ),
+      new GloboSportsNewsPageContentExtractor(
+        SourcesEnum.GLOBO_SPORTS,
+        "h1",
+        "article"
+      ),
+      storeUniqueRawNewsUseCase
+    ).execute(),
 
-  //FINANCE
+    //FINANCE
 
-  new GetLinksExtractContentStoreNewsUseCase(
-    new HomePageNewsLinksExtractor(SourcesEnum.FDR_FINANCE, "article > a"),
-    new NewsPageContentExtractor(SourcesEnum.FDR_FINANCE, "h1", "article"),
-    storeUniqueRawNewsUseCase
-  ).execute();
+    new GetLinksExtractContentStoreNewsUseCase(
+      new HomePageNewsLinksExtractor(SourcesEnum.FDR_FINANCE, "article > a"),
+      new NewsPageContentExtractor(SourcesEnum.FDR_FINANCE, "h1", "article"),
+      storeUniqueRawNewsUseCase
+    ).execute(),
 
-  //POLITICS
+    //POLITICS
 
-  new GetLinksExtractContentStoreNewsUseCase(
-    new HomePageNewsLinksExtractor(SourcesEnum.CNN_NEWS, ".home__list__item a"),
-    new NewsPageContentExtractor(
-      SourcesEnum.CNN_NEWS,
-      ".single-header__title",
-      "article"
-    ),
-    storeUniqueRawNewsUseCase
-  ).execute();
+    new GetLinksExtractContentStoreNewsUseCase(
+      new HomePageNewsLinksExtractor(
+        SourcesEnum.CNN_NEWS,
+        ".home__list__item a"
+      ),
+      new NewsPageContentExtractor(
+        SourcesEnum.CNN_NEWS,
+        ".single-header__title",
+        "article"
+      ),
+      storeUniqueRawNewsUseCase
+    ).execute(),
 
-  new GetLinksExtractContentStoreNewsUseCase(
-    new HomePageNewsLinksExtractor(SourcesEnum.G1, ".feed-post a"),
-    new NewsPageContentExtractor(
-      SourcesEnum.G1,
-      ".content-head__title",
-      "article"
-    ),
-    storeUniqueRawNewsUseCase
-  ).execute();
+    new GetLinksExtractContentStoreNewsUseCase(
+      new HomePageNewsLinksExtractor(SourcesEnum.G1, ".feed-post a"),
+      new NewsPageContentExtractor(
+        SourcesEnum.G1,
+        ".content-head__title",
+        "article"
+      ),
+      storeUniqueRawNewsUseCase
+    ).execute(),
 
-  new GetLinksExtractContentStoreNewsUseCase(
-    new HomePageNewsLinksExtractor(SourcesEnum.R7_NEWS, "article a"),
-    new NewsPageContentExtractor(SourcesEnum.R7_NEWS, "h1", "article"),
-    storeUniqueRawNewsUseCase
-  ).execute();
+    new GetLinksExtractContentStoreNewsUseCase(
+      new HomePageNewsLinksExtractor(SourcesEnum.R7_NEWS, "article a"),
+      new NewsPageContentExtractor(SourcesEnum.R7_NEWS, "h1", "article"),
+      storeUniqueRawNewsUseCase
+    ).execute(),
+  ]);
 };

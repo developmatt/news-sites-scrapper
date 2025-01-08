@@ -1,11 +1,11 @@
+import { RawNews } from "@prisma/client";
 import { RawNewsCategoryEnum } from "../../../app/enums/raw-news-category.enum";
 import { SummarizedNewMoodsEnum } from "../../../app/enums/summarized-new-moods.enum";
-import { RawNewsEntity } from "../../../app/use-cases/raw-news/entities/raw-news.entity";
-import { AiSummaryNewResponseDto } from "../../repositories/summarized-news-repository/dto/ai-summary-new-response.dto";
-import { CreateSummarizedNewsDto } from "../../repositories/summarized-news-repository/dto/create-summarized-news.dto";
+import { AiSummaryNewResponseDto } from "./dto/ai-summary-new-response.dto";
+import { CreateSummarizedNewsDto } from "./dto/create-summarized-news.dto";
 
 export class MapSummarizedNewsToStoreUsecase {
-  execute(summarizedResponse: AiSummaryNewResponseDto, correspondingRawNew: RawNewsEntity): CreateSummarizedNewsDto {
+  execute(summarizedResponse: AiSummaryNewResponseDto, correspondingRawNew: RawNews): CreateSummarizedNewsDto {
     return {
       title: summarizedResponse.title,
       content: summarizedResponse.content,
@@ -24,7 +24,7 @@ export class MapSummarizedNewsToStoreUsecase {
       mood: SummarizedNewMoodsEnum[
         summarizedResponse.mood.toUpperCase() as keyof typeof SummarizedNewMoodsEnum
       ],
-      rawNews: correspondingRawNew,
+      rawNewsId: correspondingRawNew.id!,
     }
   }
 }

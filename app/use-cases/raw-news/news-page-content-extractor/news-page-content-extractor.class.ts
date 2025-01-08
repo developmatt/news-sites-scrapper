@@ -1,10 +1,10 @@
 import axios from "axios";
 import { NewsPageContentExtractorInterface } from "./news-page-content-extractor.interface";
-import { HtmlManipulator } from "../../../../src/lib/html-manipulator.class";
 import { SourcesEnum } from "../../../enums/sources.enum";
 import { ExtractedRawNewsDto } from "../dto/extracted-raw-news.dto";
 import { compactText } from "../../../../src/utils/compactText";
 import { SourcesCategoriesEnum } from "../../../config/sources-categories";
+import { HtmlManipulator } from "@/app/lib/html-manipulator.class";
 
 export class NewsPageContentExtractor implements NewsPageContentExtractorInterface {
   protected htmlManipulator: HtmlManipulator;
