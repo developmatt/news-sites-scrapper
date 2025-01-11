@@ -9,4 +9,6 @@ export const SOURCES_LINKS = {
   [SourcesEnum.GLOBO_SPORTS]: process.env.GLOBO_SPORTS ?? '',
   [SourcesEnum.ITATIAIA_SPORTS]: process.env.ITATIAIA_SPORTS ?? '',
   [SourcesEnum.NATURE]: process.env.NATURE ?? '',
+  [SourcesEnum.BBC_WORLD_NEWS]: process.env.BBC_WORLD_NEWS ?? '',
+  [SourcesEnum.NY_TIMES_HEALTH]: process.env.NY_TIMES_HEALTH ?? ''
 }

@@ -20,12 +20,41 @@ export class HomePageNewsLinksExtractor implements HomePageNewsLinksExtractorInt
     return await axios.get(url).then((res) => res.data);
   }
 
+  buildUrlSimpleWay(supposedUrl: string): string {
+    const url = new URL(supposedUrl)
+    return url.href
+  }
+
+  buildUrlJoiningSourceAndFoundLink(supposedUrl: string): string {
+    const originSource = new URL(SOURCES_LINKS[this.source])
+    const preBuild = `${originSource.origin}${supposedUrl}`
+    const finalUrl = new URL(preBuild)
+    return finalUrl.href
+  }
+
+  //retry limit = 2
+  buildValidUrl(supposedUrl: string, retryTime: number = 0): string {
+    try {
+      const factory = [
+        this.buildUrlSimpleWay,
+        this.buildUrlJoiningSourceAndFoundLink.bind(this),
+        () => supposedUrl
+      ]
+
+      return factory[retryTime](supposedUrl)
+      
+    } catch {
+      return this.buildValidUrl(supposedUrl, retryTime + 1)
+    }
+  }
+
   async extractNewsLinksFromHomePage(homeContent: string, selector: string) {
     this.htmlManipulator.load(homeContent.toString());
     const feedPosts = this.htmlManipulator
       .querySelectorAll(selector)
       .map((_: number, item: Element) => {
-        return this.htmlManipulator.getAttribute(item, "href");
+        const att = this.htmlManipulator.getAttribute(item, "href");
+        return this.buildValidUrl(att)
       });
 
     const headlinesLinks: string[] = Array.from(new Set(feedPosts)).slice(
@@ -37,6 +66,8 @@ export class HomePageNewsLinksExtractor implements HomePageNewsLinksExtractorInt
   }
 
   async extract(): Promise<string[]> {
+    console.log(">>>sources links", SOURCES_LINKS[this.source])
+    console.log(">>>this source", this.source)
     const homeContent = await this.getPageContent(SOURCES_LINKS[this.source]);
     const headlinesLinks = await this.extractNewsLinksFromHomePage(
       homeContent,
