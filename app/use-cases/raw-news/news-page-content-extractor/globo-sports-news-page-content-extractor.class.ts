@@ -1,7 +1,7 @@
+import { compactText } from "@/app/utils/compactText";
 import { SourcesCategoriesEnum } from "../../../config/sources-categories";
 import { SourcesEnum } from "../../../enums/sources.enum";
 import { ExtractedRawNewsDto } from "../dto/extracted-raw-news.dto";
-import { compactText } from "../../../../src/utils/compactText";
 import { NewsPageContentExtractor } from "./news-page-content-extractor.class";
 
 export class GloboSportsNewsPageContentExtractor extends NewsPageContentExtractor {

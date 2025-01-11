@@ -11,6 +11,7 @@ export class GetLinksExtractContentStoreNewsUseCase {
 
   async execute() {
       const links = await this.homePageLinkExtractor.extract();
+      console.log(links);
     
       await Promise.all(
         links.map(async (link) => {

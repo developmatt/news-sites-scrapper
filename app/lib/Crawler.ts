@@ -1,5 +1,4 @@
-import puppeteer, { Browser, Page } from 'puppeteer';
-import * as cheerio from 'cheerio';
+import puppeteer, { Browser, GoToOptions, Page } from 'puppeteer';
 
 export class Crawler {
   public crawler!: Browser
@@ -12,7 +11,7 @@ export class Crawler {
     console.log(">>> Page created");
   }
 
-  async navigateToPage(url: string, options: any) {
+  async navigateToPage(url: string, options: GoToOptions) {
     await this.page.goto(url, options);
     console.log(">>> Navigated to page");
     return this.page;
