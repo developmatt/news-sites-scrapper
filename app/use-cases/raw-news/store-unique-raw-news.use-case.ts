@@ -1,4 +1,5 @@
-import { DatabaseInterface } from "../../infra/database/database.interface";
+
+import { DatabaseInterface } from "@/app/infra/database/database.interface";
 import { CreateRawNewsDto } from "../../../app/use-cases/raw-news/dto/create-raw-news.dto";
 
 export class StoreUniqueRawNewsUseCase {

@@ -1,8 +1,8 @@
-import { SummarizedNewsEntity } from "@/src/repositories/summarized-news-repository/entities/summarized-news.entity"
+import { SummarizedNews } from '@prisma/client'
 import ReactMarkdown from 'react-markdown'
 
 type NewsBlockProps = {
-  news: SummarizedNewsEntity
+  news: SummarizedNews
 }
 
 export const NewsBlock = async ({ news }: NewsBlockProps) => {
