@@ -30,22 +30,23 @@ export class SummarizedNewsRepository {
   }
 
   async getHomePageNews(): Promise<SummarizedNews[]> {
-    const date = new Date(new Date().setHours(0, 0, 0, 0));
+    try {
+      const date = new Date(new Date().setHours(0, 0, 0, 0));
 
-    const order: RawNewsCategoryEnum[] = [
-      RawNewsCategoryEnum.WORLD,
-      RawNewsCategoryEnum.LIFESTYLE,
-      RawNewsCategoryEnum.ECONOMY,
-      RawNewsCategoryEnum.HEALTH,
-      RawNewsCategoryEnum.ENTERTAINMENT,
-      RawNewsCategoryEnum.INTERNATIONAL_POLITICS,
-      RawNewsCategoryEnum.TECHNOLOGY,
-      RawNewsCategoryEnum.POLITICS,
-      RawNewsCategoryEnum.CELEBRITIES,
-      RawNewsCategoryEnum.SPORTS,
-    ];
+      const order: RawNewsCategoryEnum[] = [
+        RawNewsCategoryEnum.WORLD,
+        RawNewsCategoryEnum.LIFESTYLE,
+        RawNewsCategoryEnum.ECONOMY,
+        RawNewsCategoryEnum.HEALTH,
+        RawNewsCategoryEnum.ENTERTAINMENT,
+        RawNewsCategoryEnum.INTERNATIONAL_POLITICS,
+        RawNewsCategoryEnum.TECHNOLOGY,
+        RawNewsCategoryEnum.POLITICS,
+        RawNewsCategoryEnum.CELEBRITIES,
+        RawNewsCategoryEnum.SPORTS,
+      ];
 
-    const q: SummarizedNews[] = await prisma.$queryRaw`
+      const q: SummarizedNews[] = await prisma.$queryRaw`
         SELECT * FROM "SummarizedNews"
         WHERE "createdAt" >= ${date}
         ORDER BY
@@ -54,7 +55,10 @@ export class SummarizedNewsRepository {
           .join("\n")}
       `;
 
-    return q;
+      return q;
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
   }
 }
-
