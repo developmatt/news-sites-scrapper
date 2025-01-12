@@ -34,10 +34,10 @@ export class SummarizedNewsRepository {
       const date = new Date(new Date().setHours(0, 0, 0, 0));
 
       const order: RawNewsCategoryEnum[] = [
+        RawNewsCategoryEnum.HEALTH,
         RawNewsCategoryEnum.WORLD,
         RawNewsCategoryEnum.LIFESTYLE,
         RawNewsCategoryEnum.ECONOMY,
-        RawNewsCategoryEnum.HEALTH,
         RawNewsCategoryEnum.ENTERTAINMENT,
         RawNewsCategoryEnum.INTERNATIONAL_POLITICS,
         RawNewsCategoryEnum.TECHNOLOGY,
