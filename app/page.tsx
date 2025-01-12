@@ -2,7 +2,7 @@ import { getHomePageNewsAction } from "./actions/getHomePageNews";
 import { NewsList } from "./components/news-list";
 import { CONFIG } from "./config/config";
 
-export default async function Home() {
+export default async function Page() {
   const posts = await getHomePageNewsAction()
 
   console.log(">env", CONFIG.isProd)
