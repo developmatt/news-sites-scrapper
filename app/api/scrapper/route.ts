@@ -18,7 +18,8 @@ export async function GET() {
     });
   });
 
-  const openAIDep = CONFIG.isProd ? new Deepseek() : new DeepseekMock();
+  // const openAIDep = CONFIG.isProd ? new Deepseek() : new DeepseekMock();
+  const openAIDep = new Deepseek();
   
   const ai = new Ai(openAIDep);
   const summarized = await ai.summarizeTexts(contentsArray);
