@@ -12,7 +12,8 @@
     "typeorm": "yarn run build && npx typeorm -d dist/src/infra/database/data-source.js",
     "migrate:gen": "yarn run build && cd src/infra/database/migrations/ && npx typeorm -d ../../../../dist/src/infra/database/data-source.js migration:generate -p",
     "migrate:latest": "yarn typeorm migration:run",
-    "migrate:rollback": "yarn typeorm migration:revert"
+    "migrate:rollback": "yarn typeorm migration:revert",
+    "postinstall": "prisma generate"
   },
   "keywords": [],
   "author": "",
