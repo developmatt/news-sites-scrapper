@@ -4,7 +4,7 @@
     "schedule": "0 6 * * *"
   }],
   "functions": {
-    "/api/scrapper": {
+    "api/scrapper": {
       "maxDuration": 60
     }
   }
