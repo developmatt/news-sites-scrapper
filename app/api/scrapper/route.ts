@@ -7,6 +7,7 @@ import { selectRawNewsToSummarize } from "@/app/use-cases/raw-news/select-raw-ne
 import { MapSummarizedNewsToStoreUsecase } from "@/app/use-cases/summarized-news/map-summarized-news-to-store.use-case";
 import { SummarizedNewsRepository } from "@/app/use-cases/summarized-news/summarized-news-repository.repository";
 
+export const maxDuration = 60;
 export async function GET() {
   await extractNews();
   const news = await selectRawNewsToSummarize();
@@ -17,7 +18,8 @@ export async function GET() {
     });
   });
 
-  const openAIDep = CONFIG.isProd ? new Deepseek() : new DeepseekMock();
+  // const openAIDep = CONFIG.isProd ? new Deepseek() : new DeepseekMock();
+  const openAIDep = new Deepseek();
   
   const ai = new Ai(openAIDep);
   const summarized = await ai.summarizeTexts(contentsArray);
