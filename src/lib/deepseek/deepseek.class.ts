@@ -1,7 +1,8 @@
 import OpenAIPackage from 'openai';
 import { CONFIG } from '../../config/config';
-import { AiInterface } from '../../core/ai/ai.interface';
-import { ChatCompletionMessageParam, ChatCompletionUserMessageParam } from 'openai/resources';
+import { AiInterface } from '../ai/ai.interface';
+import { ChoicesInterface } from '../ai/interfaces/completions-choice.interface';
+import { ChatCompletion, ChatCompletionMessageParam, ChatCompletionUserMessageParam } from 'openai/resources';
 
 export class Deepseek implements AiInterface {
   client: OpenAIPackage;
@@ -37,9 +38,18 @@ export class Deepseek implements AiInterface {
     ];
 
 
-    return this.client.chat.completions.create({
+    const completions = await this.client.chat.completions.create({
       model: "deepseek-chat",
       messages
     });
+
+    return {
+      ...completions,
+      choices: completions.choices.map((choice: ChatCompletion.Choice): ChoicesInterface => {
+        return {
+          message: choice.message.content,
+        }
+      })
+    }
   }
 }

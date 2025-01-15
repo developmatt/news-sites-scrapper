@@ -7,7 +7,7 @@ export class Ai {
 
   async summarizeTexts(texts: string[]): Promise<AiSummaryNewResponseDto[]> {
     let index = 0;
-    let textsToProcess: string[][] = [];
+    const textsToProcess: string[][] = [];
 
     do {
       textsToProcess.push(
@@ -25,8 +25,7 @@ export class Ai {
               CONFIG.chatInstructions
             );
 
-            
-            const content = res?.choices[0].message.content.replace('```json', '').replace('```', '');
+            const content = res?.choices?.[0]?.message?.replace('```json', '').replace('```', '') || '';
             console.log(">>>content")
             console.log(JSON.parse(content))
             return JSON.parse(content) as AiSummaryNewResponseDto[];

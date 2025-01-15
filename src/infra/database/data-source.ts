@@ -11,7 +11,7 @@ export const AppDataSource = new DataSource({
   password: CONFIG.dbPassword ?? 'pg',
   database: CONFIG.dbName ?? 'news_scrapper',
   synchronize: false,
-  logging: !CONFIG.isProd,
+  logging: true,
   entities: [
     RawNewsEntity,
     SummarizedNewsEntity

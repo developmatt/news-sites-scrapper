@@ -1,8 +1,9 @@
-import { CreateRawNewsDto } from "../../repositories/raw-news-repository/dto/create-raw-news.dto";
+import { CreateRawNewsDto } from "./dto/create-raw-news.dto";
 import { DatabaseInterface } from "../../infra/database/database.interface";
-import { RawNewsEntity } from "../../repositories/raw-news-repository/entities/raw-news.entity";
+import { RawNewsEntity } from "./entities/raw-news.entity";
 import { AppDataSource } from "../../infra/database/data-source";
 import { SummarizedNewsEntity } from "../summarized-news-repository/entities/summarized-news.entity";
+import { FindManyOptions } from "typeorm";
 
 type CreateOptions = {
   retry?: number;
@@ -21,7 +22,7 @@ export class RawNewsRepository implements DatabaseInterface {
       rawNews.title = createRawNewsDto.title;
       rawNews.content = createRawNewsDto.content;
       rawNews.source = createRawNewsDto.source;
-      rawNews.rawCategory = createRawNewsDto.category;
+      rawNews.category = createRawNewsDto.category;
 
       return repository.save(rawNews);
     } catch (erro) {
@@ -46,7 +47,7 @@ export class RawNewsRepository implements DatabaseInterface {
       },
     });
 
-    const ids = summarizedNews.map((item) => item.rawNews.id) ?? [];
+    const ids = summarizedNews.map((item) => item?.rawNews?.id) ?? [];
 
     const query = repository
       .createQueryBuilder("raw_news");
@@ -57,5 +58,20 @@ export class RawNewsRepository implements DatabaseInterface {
       });
     }
     return query.getMany();
+  }
+
+  async findRawNewsByTitleAndContent(title: string, content: string): Promise<RawNewsEntity[]> {
+    return repository.find({
+      where: {
+        title,
+        content
+      }
+    });
+  }
+
+  findOne(entity: RawNewsEntity) {
+    return repository.findOne({
+      where: entity
+    });
   }
 }

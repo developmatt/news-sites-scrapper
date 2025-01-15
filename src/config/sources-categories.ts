@@ -8,4 +8,7 @@ export const SourcesCategoriesEnum = {
   [SourcesEnum.FDR_FINANCE]: RawNewsCategoryEnum.ECONOMY,
   [SourcesEnum.GLOBO_SPORTS]: RawNewsCategoryEnum.SPORTS,
   [SourcesEnum.ITATIAIA_SPORTS]: RawNewsCategoryEnum.SPORTS,
+  [SourcesEnum.NATURE]: RawNewsCategoryEnum.SCIENCE,
+  [SourcesEnum.BBC_WORLD_NEWS]: RawNewsCategoryEnum.WORLD,
+  [SourcesEnum.NY_TIMES_HEALTH]: RawNewsCategoryEnum.HEALTH
 }
