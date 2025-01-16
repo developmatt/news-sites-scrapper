@@ -17,9 +17,9 @@ export class RawNewsEntity1735844097221 implements MigrationInterface {
                 CONSTRAINT "PK_bd12a2f85df8c176ee373bee353" PRIMARY KEY ("id")
             )
         `);
-        await queryRunner.query(`
-            CREATE TYPE "public"."summarized_news_entity_mood_enum" AS ENUM('positive', 'negative', 'neutral')
-        `);
+        // await queryRunner.query(`
+        //     CREATE TYPE "public"."summarized_news_entity_mood_enum" AS ENUM('positive', 'negative', 'neutral')
+        // `);
         await queryRunner.query(`
             CREATE TABLE "summarized_news_entity" (
                 "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
