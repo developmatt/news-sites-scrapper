@@ -12,9 +12,9 @@ export const AppDataSource = new DataSource({
   database: CONFIG.dbName ?? 'news_scrapper',
   synchronize: false,
   logging: true,
-  extra: {
-    ssl: "true",
-  },
+  // extra: {
+  //   ssl: "true",
+  // },
   entities: [
     RawNewsEntity,
     SummarizedNewsEntity
