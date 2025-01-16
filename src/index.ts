@@ -31,7 +31,11 @@ AppDataSource.initialize()
       }
 
       if (reqUrl == "/scrapper") {
+        
         try {
+          res.write(JSON.stringify({ success: true }));
+          res.end();
+          
           await extractNews();
           const news = await selectRawNewsToSummarize();
           const contentsArray = news?.map((item) => {
@@ -57,8 +61,8 @@ AppDataSource.initialize()
               await summarizedRepository.create(mapped);
             })
           );
-          res.write(JSON.stringify({ success: true }));
-          return res.end();
+          
+          return 
         } catch (error) {
           console.log(error);
           res.write(JSON.stringify({ success: false, error: error }));
