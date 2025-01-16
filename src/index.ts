@@ -31,30 +31,39 @@ AppDataSource.initialize()
       }
 
       if (reqUrl == "/scrapper") {
-        await extractNews();
-        const news = await selectRawNewsToSummarize();
-        const contentsArray = news?.map((item) => {
-          return JSON.stringify({
-            id: item.id,
-            content: item.content,
+        try {
+          await extractNews();
+          const news = await selectRawNewsToSummarize();
+          const contentsArray = news?.map((item) => {
+            return JSON.stringify({
+              id: item.id,
+              content: item.content,
+            });
           });
-        });
 
-        const openAIDep = CONFIG.isProd ? new Deepseek() : new DeepseekMock();
+          const openAIDep = CONFIG.isProd ? new Deepseek() : new DeepseekMock();
 
-        const ai = new Ai(openAIDep);
-        const summarized = await ai.summarizeTexts(contentsArray);
-        const summarizedRepository = new SummarizedNewsRepository();
-        const mapSummarizedNewsToStoreUsecase =
-          new MapSummarizedNewsToStoreUsecase();
-        await Promise.all(
-          summarized.map(async (item, index) => {
-            const mapped = mapSummarizedNewsToStoreUsecase.execute(item, news[index]);
-            await summarizedRepository.create(mapped);
-          })
-        );
-        res.write(JSON.stringify({success: true}));
-        return res.end();
+          const ai = new Ai(openAIDep);
+          const summarized = await ai.summarizeTexts(contentsArray);
+          const summarizedRepository = new SummarizedNewsRepository();
+          const mapSummarizedNewsToStoreUsecase =
+            new MapSummarizedNewsToStoreUsecase();
+          await Promise.all(
+            summarized.map(async (item, index) => {
+              const mapped = mapSummarizedNewsToStoreUsecase.execute(
+                item,
+                news[index]
+              );
+              await summarizedRepository.create(mapped);
+            })
+          );
+          res.write(JSON.stringify({ success: true }));
+          return res.end();
+        } catch (error) {
+          console.log(error);
+          res.write(JSON.stringify({ success: false, error: error }));
+          return res.end();
+        }
       }
     });
 
