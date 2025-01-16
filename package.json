@@ -8,10 +8,10 @@
     "start": "node dist/index.js",
     "build": "tsc && npx typeorm -d dist/src/infra/database/data-source.js migration:run",
     "dev": "node --env-file=.env --import=tsx --watch ./src/index.ts",
-    "typeorm": "yarn run build && npx typeorm -d dist/src/infra/database/data-source.js",
-    "migrate:gen": "yarn run build && cd src/infra/database/migrations/ && npx typeorm -d ../../../../dist/src/infra/database/data-source.js migration:generate -p",
-    "migrate:latest": "yarn typeorm migration:run",
-    "migrate:rollback": "yarn typeorm migration:revert"
+    "typeorm": "npm run build && npx typeorm -d dist/src/infra/database/data-source.js",
+    "migrate:gen": "npm run build && cd src/infra/database/migrations/ && npx typeorm -d ../../../../dist/src/infra/database/data-source.js migration:generate -p",
+    "migrate:latest": "npm run typeorm migration:run",
+    "migrate:rollback": "npm run typeorm migration:revert"
   },
   "keywords": [],
   "author": "",

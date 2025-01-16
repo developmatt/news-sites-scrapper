@@ -12,8 +12,11 @@ export const AppDataSource = new DataSource({
   database: CONFIG.dbName ?? 'news_scrapper',
   synchronize: false,
   logging: true,
+  ssl: true,
   extra: {
-    ssl: "true",
+    ssl: {
+      rejectUnauthorized: false
+    }
   },
   entities: [
     RawNewsEntity,
