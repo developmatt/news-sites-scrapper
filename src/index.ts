@@ -53,6 +53,7 @@ AppDataSource.initialize()
             await summarizedRepository.create(mapped);
           })
         );
+        res.write(JSON.stringify({success: true}));
         return res.end();
       }
     });
