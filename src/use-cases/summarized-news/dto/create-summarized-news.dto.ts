@@ -1,5 +1,6 @@
 import { RawNewsCategoryEnum } from "../../../enums/raw-news-category.enum";
 import { SummarizedNewMoodsEnum } from "../../../enums/summarized-new-moods.enum";
+import { RawNewsEntity } from "../../../repositories/raw-news-repository/entities/raw-news.entity";
 
 export class CreateSummarizedNewsDto {
   title: string;
@@ -7,5 +8,5 @@ export class CreateSummarizedNewsDto {
   tags: string[];
   categories: RawNewsCategoryEnum[];
   mood: SummarizedNewMoodsEnum;
-  rawNewsId: string;
+  rawNews: RawNewsEntity;
 }

@@ -11,13 +11,13 @@ export const AppDataSource = new DataSource({
   password: CONFIG.dbPassword ?? 'pg',
   database: CONFIG.dbName ?? 'news_scrapper',
   synchronize: false,
-  logging: true,
-  ssl: true,
-  extra: {
+  logging: !CONFIG.isProd,
+  ssl: CONFIG.isProd,
+  extra: CONFIG.isProd ? {
     ssl: {
       rejectUnauthorized: false
     }
-  },
+  }: undefined,
   entities: [
     RawNewsEntity,
     SummarizedNewsEntity

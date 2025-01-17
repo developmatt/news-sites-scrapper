@@ -24,7 +24,7 @@ export class MapSummarizedNewsToStoreUsecase {
       mood: SummarizedNewMoodsEnum[
         summarizedResponse.mood.toUpperCase() as keyof typeof SummarizedNewMoodsEnum
       ],
-      rawNewsId: correspondingRawNew.id!,
+      rawNews: correspondingRawNew,
     }
   }
 }
