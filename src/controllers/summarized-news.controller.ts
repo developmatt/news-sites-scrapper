@@ -9,8 +9,10 @@ export class SummarizedNewsController {
       summarizedRepository
     );
     const content = await getHomePageNewsUseCase.execute();
+    console.log(">>>content")
+    console.log(content)
     res.writeHead(200, { "Content-Type": "application/json" });
-    res.write(JSON.stringify(content));
+    res.write(JSON.stringify(content || {}));
     return res.end();
   }
 }
