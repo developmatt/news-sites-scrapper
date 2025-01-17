@@ -1,4 +1,3 @@
-import { getManager } from "typeorm";
 import { RawNewsCategoryEnum } from "../../enums/raw-news-category.enum";
 import { AppDataSource } from "../../infra/database/data-source";
 import { SummarizedNewsEntity } from "../../repositories/summarized-news-repository/entities/summarized-news.entity";
@@ -53,18 +52,14 @@ export class SummarizedNewsRepository {
         RawNewsCategoryEnum.SPORTS,
       ];
 
-      const manager = getManager();
+      const query = repository.createQueryBuilder("summarized_news")
+      query.where("summarized_news.createdAt >= :date", { date })
 
-      const q: SummarizedNewsEntity[] = await manager.query(`
-        SELECT * FROM "SummarizedNews"
-        WHERE "createdAt" >= ${date}
-        ORDER BY
-        ${order
-          .map((category) => `array_position(categories, ${category}) ASC,`)
-          .join("\n")}
-      `);
+      order.map((category) => {
+        query.addOrderBy(`array_position(summarized_news.categories, '${category}')`, "ASC")
+      })
 
-      return q;
+      return query.getMany();
     } catch (error) {
       console.error(error);
       return [];

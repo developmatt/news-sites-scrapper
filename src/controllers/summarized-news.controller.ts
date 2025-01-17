@@ -10,7 +10,7 @@ export class SummarizedNewsController {
     );
     const content = await getHomePageNewsUseCase.execute();
     res.writeHead(200, { "Content-Type": "application/json" });
-    res.write(JSON.stringify(content));
+    res.write(JSON.stringify(content || {}));
     return res.end();
   }
 }
