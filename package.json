@@ -11,12 +11,14 @@
     "typeorm": "npm run build && npx typeorm -d dist/src/infra/database/data-source.js",
     "migrate:gen": "npm run build && cd src/infra/database/migrations/ && npx typeorm -d ../../../../dist/src/infra/database/data-source.js migration:generate -p",
     "migrate:latest": "npm run typeorm migration:run",
-    "migrate:rollback": "npm run typeorm migration:revert"
+    "migrate:rollback": "npm run typeorm migration:revert",
+    "runscrapper": "node dist/src/scripts/call-run-scrapper-flow-action.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/express": "^5.0.0",
     "@types/node": "^22.10.2",
     "typescript": "^5.7.2"
   },
@@ -24,6 +26,7 @@
     "axios": "^1.7.9",
     "cheerio": "^1.0.0",
     "dotenv": "^16.4.7",
+    "express": "^4.21.2",
     "openai": "^4.77.0",
     "pg": "^8.13.1",
     "puppeteer": "^23.11.1",
