@@ -26,8 +26,6 @@ export class Ai {
             );
 
             const content = res?.choices?.[0]?.message?.replace('```json', '').replace('```', '') || '';
-            console.log(">>>content")
-            console.log(JSON.parse(content))
             return JSON.parse(content) as AiSummaryNewResponseDto[];
           } catch (error) {
             console.log(error)
@@ -38,17 +36,5 @@ export class Ai {
     ).flat();
 
     return content;
-
-    // const res = await this.aiService.createCompletions(texts, CONFIG.chatInstructions)
-    // console.log(">>>>res", res)
-    // console.log("----------------------------------------------------------------")
-
-    // console.log(">>>>>choices")
-    // console.log(res?.choices[0].message.content)
-    // const content = res?.choices[0].message.content.replace('```json', '').replace('```', '')
-    // const content = res?.choices[0].message.content
-    // return content
-
-    // return JSON.parse(content)
   }
 }
