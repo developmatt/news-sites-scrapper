@@ -43,10 +43,10 @@ export class SummarizedNewsRepository {
         RawNewsCategoryEnum.HEALTH,
         RawNewsCategoryEnum.WORLD,
         RawNewsCategoryEnum.LIFESTYLE,
+        RawNewsCategoryEnum.TECHNOLOGY,
         RawNewsCategoryEnum.ECONOMY,
         RawNewsCategoryEnum.ENTERTAINMENT,
         RawNewsCategoryEnum.INTERNATIONAL_POLITICS,
-        RawNewsCategoryEnum.TECHNOLOGY,
         RawNewsCategoryEnum.POLITICS,
         RawNewsCategoryEnum.CELEBRITIES,
         RawNewsCategoryEnum.SPORTS,
@@ -58,6 +58,8 @@ export class SummarizedNewsRepository {
       order.map((category) => {
         query.addOrderBy(`array_position(summarized_news.categories, '${category}')`, "ASC")
       })
+
+      query.addOrderBy("summarized_news.score", "DESC")
 
       return query.getMany();
     } catch (error) {
